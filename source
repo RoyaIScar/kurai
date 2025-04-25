@@ -1325,10 +1325,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 end
             end
 
-            if isOpen then
-                toggleDropdown(false)
+            --if isOpen then
                 createOptions(optiontable)
-            end
+            --end
             
             return control
         end
