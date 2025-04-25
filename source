@@ -1123,10 +1123,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     
     local function createOptions(optiontable : table)
 
-        if isOpen then
-            repeat task.wait() until not isOpen -- yup
-        end
-
         -- [ clear existing optinos ]
 
         for _, child in next, optionsList:GetChildren() do
@@ -1334,6 +1330,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             end
 
             if isOpen then
+                repeat task.wait() until not isOpen
                 createOptions(optiontable)
             end
             
