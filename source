@@ -1108,17 +1108,17 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     optionsPadding.PaddingLeft = UDim.new(0, 2)
     optionsPadding.PaddingRight = UDim.new(0, 2)
     optionsPadding.Parent = optionsList
-    
-    local isOpen = false
-    local options = props.Options or {}
 
-    for i, option in next, options do
-        if typeof(option) ~= "string" then
-            if option:IsA("Instance") or option:IsA("Player") then
-                option = tostring(option)
+    for i, option in next, props.Options do
+            if typeof(option) ~= "string" then
+                if option:IsA("Instance") or option:IsA("Player") then
+                option = option.Name
             end
         end
     end
+    
+    local isOpen = false
+    local options = props.Options or {}
 
     local selectedOption = props.Default or props.State or (options[1] or "")
     
