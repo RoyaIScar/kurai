@@ -1808,3 +1808,5 @@ function Kurai_Lib.Rainbow(element, speed)
 end
 
 return Kurai_Lib
+
+print("l")
