@@ -1133,7 +1133,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         
         for i, option in next, optiontable do
 
-            if typeof(option) ~= "string" and typeof(option) ~= "function"  then
+            if typeof(option) ~= "string" then
                 if option:IsA("Instance") or option:IsA("Player") then
                     option = option.Name
                 end
@@ -1330,10 +1330,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             end
 
             if isOpen then
+                repeat task.wait() until not isOpen
                 createOptions(optiontable)
             end
-
-            createOptions(optiontable)
             
             return control
         end
@@ -1806,7 +1805,5 @@ function Kurai_Lib.Rainbow(element, speed)
         end
     end)()
 end
-
-print("l")
 
 return Kurai_Lib
