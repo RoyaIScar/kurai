@@ -1108,11 +1108,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     optionsPadding.PaddingLeft = UDim.new(0, 2)
     optionsPadding.PaddingRight = UDim.new(0, 2)
     optionsPadding.Parent = optionsList
-
-    for i,option in next,props.Options do
-       option = tostring(option) -- :rainbow_flag:
-       print(option)
-    end
     
     local isOpen = false
     local options = props.Options or {}
@@ -1133,6 +1128,11 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         end
         
         for i, option in next, options do
+
+            for i, option in next, options do
+                option = tostring(option) -- :rainbow_flag:
+                print(option)
+             end
 
             local optionButton = Instance.new("TextButton")
             optionButton.Name = option
