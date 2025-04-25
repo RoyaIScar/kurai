@@ -1313,7 +1313,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             options = newOptions
 
             for i, option in next, options do
-                if typeof(option) ~= "string" then
+                if typeof(option) ~= "string" and typeof(option) ~= "function" then
                     if option:IsA("Instance") then
                         option = option.Name
                     end
