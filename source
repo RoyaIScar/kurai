@@ -1115,6 +1115,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         end
         if option:IsA("Instance") or option:IsA("Player") then
             option = option.Name
+            print(option)
         end
     end
     
