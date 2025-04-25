@@ -1123,8 +1123,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     
     local function createOptions(optiontable : table)
 
-        options = optiontable
-
         -- [ clear existing optinos ]
         for _, child in next, optionsList:GetChildren() do
             if child:IsA("TextButton") then
@@ -1134,7 +1132,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         
         for i, option in next, optiontable do
 
-            if typeof(option) ~= "string" then
+            if typeof(option) ~= "string" or typeof(option) ~= "function" then
                 if option:IsA("Instance") or option:IsA("Player") then
                     option = option.Name
                 end
@@ -1223,7 +1221,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             Kurai_Lib.Tween(optionsFrame, {Size = UDim2.new(0, absSize.X, 0, targetHeight)}, 0.2)
             Kurai_Lib.Tween(arrowIcon, {Rotation = 180}, 0.2)
             
-            createOptions(options)
+            --createOptions(options)
         else
             Kurai_Lib.Tween(optionsFrame, {Size = UDim2.new(0, optionsFrame.AbsoluteSize.X, 0, 0)}, 0.2)
             Kurai_Lib.Tween(arrowIcon, {Rotation = 0}, 0.2)
