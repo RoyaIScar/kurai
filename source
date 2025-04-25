@@ -1080,7 +1080,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     optionsFrame.Visible = false
     optionsFrame.ZIndex = 10
     optionsFrame.ClipsDescendants = true
-    -- [ don't parent yet - will parent dynamically when shown ]
+    optionsFrame.Parent = self.ScreenGui
+
     
     local optionsCorner = Instance.new("UICorner")
     optionsCorner.CornerRadius = UDim.new(0, 3)
@@ -1133,7 +1134,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         
         for i, option in next, optiontable do
 
-            if typeof(option) ~= "string" and typeof(option) ~= "function" then
+            if typeof(option) ~= "string" then
                 if option:IsA("Instance") or option:IsA("Player") then
                     option = option.Name
                 end
@@ -1214,7 +1215,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             local absPos = selectionButton.AbsolutePosition
             local absSize = selectionButton.AbsoluteSize
             
-            optionsFrame.Parent = self.ScreenGui
+          --optionsFrame.Parent = self.ScreenGui
             optionsFrame.Position = UDim2.new(0, absPos.X, 0, absPos.Y + absSize.Y + 5)
             optionsFrame.Size = UDim2.new(0, absSize.X, 0, 0)
             optionsFrame.Visible = true
@@ -1230,7 +1231,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             task.delay(0.2, function()
                 if not isOpen then
                     optionsFrame.Visible = false
-                    optionsFrame.Parent = nil
+                    --optionsFrame.Parent = nil
                 end
             end)
         end
