@@ -1128,7 +1128,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         
         for i, option in next, options do
 
-            if option:IsA("Instance") or option:IsA("Player") then option = option.Name end
+            if options:IsA("Instance") or options:IsA("Player") then
+                options = options.Name
+            end
 
             local optionButton = Instance.new("TextButton")
             optionButton.Name = option
