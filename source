@@ -1308,19 +1308,25 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             return selectedOption
         end,
 
-        Refresh = function(newOptions, keepSelection)
+        Refresh = function(newOptions : table, keepSelection)
+
+            options = newOptions
+
+            for i, option in next, options do
+                if typeof(option) ~= "string" then
+                    if option:IsA("Instance") then
+                        option = option.Name
+                    end
+                end
+            end
 
             if keepSelection then
                 local sameoption = table.find(newOptions, selectedOption)
 
                 if sameoption then
-                    selectedOption = sameoption
+                    selectedOption = options[1]
                 end
             end
-
-            options = newOptions
-
-            print("new options", table.unpack(options))
 
             if isOpen then
                 createOptions()
