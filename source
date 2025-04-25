@@ -1017,13 +1017,6 @@ end
 function Kurai_Lib:_createDropdown(tabName, props, flag)
     props = props or {}
 
-    for i, option in props.Options do
-        if typeof(option) == "table" then
-            table.insert(props.Options,table.unpack(option))
-        end
-        option = tostring(option)
-    end
-
     local tab = self.Tabs[tabName]
     if not tab then return nil end
     
@@ -1137,6 +1130,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         
         for i, option in next, options do
            
+            option = tostring(option) -- 🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈
+
             local optionButton = Instance.new("TextButton")
             optionButton.Name = option
             optionButton.Text = option
