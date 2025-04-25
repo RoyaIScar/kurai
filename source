@@ -1123,6 +1123,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     
     local function createOptions(optiontable : table)
 
+        options = optiontable
+
         -- [ clear existing optinos ]
         for _, child in next, optionsList:GetChildren() do
             if child:IsA("TextButton") then
@@ -1198,7 +1200,10 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         end
     end
     
-    local function toggleDropdown(forceState)
+    local function toggleDropdown(forceState : boolean , newOptions : table)
+
+        local optiontable = newOptions
+
         if forceState ~= nil then
             isOpen = forceState
         else
@@ -1221,7 +1226,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             Kurai_Lib.Tween(optionsFrame, {Size = UDim2.new(0, absSize.X, 0, targetHeight)}, 0.2)
             Kurai_Lib.Tween(arrowIcon, {Rotation = 180}, 0.2)
             
-            --createOptions(options)
+            createOptions(newOptions)
         else
             Kurai_Lib.Tween(optionsFrame, {Size = UDim2.new(0, optionsFrame.AbsoluteSize.X, 0, 0)}, 0.2)
             Kurai_Lib.Tween(arrowIcon, {Rotation = 0}, 0.2)
@@ -1236,7 +1241,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     end
     
     selectionButton.MouseButton1Click:Connect(function()
-        toggleDropdown()
+        toggleDropdown(options)
     end)
     
     local inputBeganConnection
@@ -1273,7 +1278,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                         mousePos.Y <= selectionButtonPos.Y + selectionButtonSize.Y
                     
                     if not isInOptionsFrame and not isInSelectionButton then
-                        toggleDropdown(false)
+                        toggleDropdown(false,options)
                     end
                 end
             end
@@ -1327,9 +1332,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 end
             end
 
-            if isOpen then
+            --if isOpen then
                 createOptions(optiontable)
-            end
+            --end
             
             return control
         end
