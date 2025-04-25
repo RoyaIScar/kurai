@@ -1129,8 +1129,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         end
         
         for i, option in next, options do
-           
-            option = tostring(option) -- 🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈🏳️‍🌈
 
             local optionButton = Instance.new("TextButton")
             optionButton.Name = option
