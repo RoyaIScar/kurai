@@ -1120,7 +1120,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     
     selectionButton.Text = selectedOption
     
-    local function createOptions()
+    local function createOptions(optiontable : table)
         -- [ clear existing optinos ]
         for _, child in next, optionsList:GetChildren() do
             if child:IsA("TextButton") then
@@ -1128,7 +1128,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             end
         end
         
-        for i, option in next, options do
+        for i, option in next, optiontable do
 
             local optionButton = Instance.new("TextButton")
             optionButton.Name = option
@@ -1308,24 +1308,23 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             return selectedOption
         end,
 
-        Refresh = function(newOptions : table, keepSelection)
+        Refresh = function(newOptions : table, keepSelection : boolean)
 
-            options = {}
+            local optiontable = newOptions
 
-            for i, option in next, newOptions do
-                table.insert(options,option)
+            for i, option in next, options do
                 print(option)
             end
 
             if keepSelection then
-                local sameoption = table.find(options,selectedOption)
+                local sameoption = table.find(optiontable,selectedOption)
                 if sameoption then
-                    selectedOption = sameoption or options[1]
+                    selectedOption = sameoption or optiontable[1]
                 end
             end
 
             if isOpen then
-                createOptions()
+                createOptions(optiontable)
             end
             
             return control
