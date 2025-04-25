@@ -1110,6 +1110,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     optionsPadding.Parent = optionsList
 
     for i,option in next,props.Options do
+        print(option)
         if typeof(option) == "string" then
             return
         end
