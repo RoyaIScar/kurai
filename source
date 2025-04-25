@@ -1121,6 +1121,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     selectionButton.Text = selectedOption
     
     local function createOptions(optiontable : table)
+
+        options = optiontable
+
         -- [ clear existing optinos ]
         for _, child in next, optionsList:GetChildren() do
             if child:IsA("TextButton") then
@@ -1325,9 +1328,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 end
             end
 
-            --if isOpen then
+            if isOpen then
                 createOptions(optiontable)
-            --end
+            end
             
             return control
         end
