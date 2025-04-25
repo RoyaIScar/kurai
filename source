@@ -1123,8 +1123,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     
     local function createOptions(optiontable : table)
 
-        options = optiontable
-
         -- [ clear existing optinos ]
 
         for _, child in next, optionsList:GetChildren() do
@@ -1334,6 +1332,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             if isOpen then
                 createOptions(optiontable)
             end
+
+            createOptions(optiontable)
             
             return control
         end
@@ -1807,6 +1807,6 @@ function Kurai_Lib.Rainbow(element, speed)
     end)()
 end
 
-return Kurai_Lib
-
 print("l")
+
+return Kurai_Lib
