@@ -1112,7 +1112,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     local isOpen = false
     local options = props.Options or {}
 
-    for option in next, options do
+    for i, option in next, options do
         if option:IsA("Instance") or option:IsA("Player") then
             option = option.Name
         end
