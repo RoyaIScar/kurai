@@ -1166,8 +1166,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
         for i, option in next, optiontable do
 
-            if type(option) == "function" then 
-                table.remove(option,optiontable)
+            if type(option) == "function" then
+                table.remove(optiontable,option)
             end
 
             if type(option) ~= "string" then
