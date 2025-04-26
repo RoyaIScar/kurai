@@ -1489,8 +1489,9 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 else
                     -- Keep only options that still exist
                     for i, option in next, selectedOptions do
-                        if not table.find(optiontable, option) then
-                            table.remove(selectedOptions, table.find(optiontable, option))
+                        local sameoption = table.find(optiontable, option)
+                        if not sameoption then
+                            table.remove(selectedOptions, sameoption)
                             print("removed ", option)
                         end
                     end
