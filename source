@@ -1492,7 +1492,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                     -- Keep only options that still exist
                     for _, opt in ipairs(selectedOptions) do
                         if not table.find(optiontable, opt) then
-                            table.remove(selectedOption, opt)
+                            table.remove(selectedOptions, opt)
                         end
                     end
 
