@@ -1166,12 +1166,11 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
         for i, option in next, optiontable do
 
-            --[[
             if type(option) == "function" then
                 table.remove(optiontable,option)
-            end--]]
+            end
 
-            if type(option) ~= "string" and type(option) ~= "function" then
+            if type(option) ~= "string" then
                 if option:IsA("Instance") or option:IsA("Player") then
                     option = option.Name
                 end
@@ -1489,16 +1488,12 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                     selectionButton.Text = "None"
                 else
                     -- Keep only options that still exist
-                    local newSelectedOptions = {}
-
                     for i, option in next, selectedOptions do
-                        if table.find(optiontable, option) then
-                            table.insert(newSelectedOptions, option)
+                        if not table.find(optiontable, option) then
+                            table.remove(selectedOptions, option)
+                            print("removed ", option)
                         end
                     end
-
-                    selectedOptions = newSelectedOptions
-                    print(table.unpack(newSelectedOptions))
 
                     -- Update display text
                     if #selectedOptions == 0 then
