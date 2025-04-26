@@ -1490,13 +1490,14 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 else--]]
                    if keepSelection then
                     -- Keep only options that still exist
-
-                   for i, option in next, selectedOptions do
-                    local foundoption = table.find(optiontable, option)
-                    if not foundoption then
-                        table.remove(selectedOptions, foundoption)
-                       end
+                    local newSelectedOptions = {}
+                    for _, opt in ipairs(selectedOptions) do
+                        if table.find(optiontable, opt) then
+                            table.insert(newSelectedOptions, opt)
+                        end
                     end
+
+                    selectedOptions = newSelectedOptions
 
 
                     -- Update display text
