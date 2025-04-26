@@ -1479,7 +1479,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         end,
         Refresh = function(newOptions : table, keepSelection : boolean)
 
-            local optiontable = newOptions
+             options = newOptions
 
             if isMulti then
                 --[[
@@ -1492,7 +1492,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                     -- Keep only options that still exist
                     local newSelectedOptions = {}
                     for _, opt in ipairs(selectedOptions) do
-                        if table.find(selectedOptions, opt) then
+                        if table.find(options, opt) then
                             table.insert(newSelectedOptions, opt)
                         end
                     end
@@ -1510,8 +1510,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                     self.Flags[flag or props.Text or "Dropdown"] = selectedOptions
                 end
             else
-                if not keepSelection or not table.find(optiontable, selectedOption) then
-                    selectedOption = optiontable[1] or ""
+                if not keepSelection or not table.find(options, selectedOption) then
+                    selectedOption = options[1] or ""
                     self.Flags[flag or props.Text or "Dropdown"] = selectedOption
                     selectionButton.Text = selectedOption
                 end
@@ -1519,7 +1519,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
             if isOpen then
                 repeat task.wait() until not isOpen
-                createOptions(optiontable)
+                createOptions(options)
             end
 
             return control
