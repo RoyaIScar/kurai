@@ -1019,6 +1019,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
     local tab = self.Tabs[tabName]
     if not tab then return nil end
+
+    local multiselect = props.Multiselect or false
     
     local dropdown = Instance.new("Frame")
     dropdown.Name = props.Text or "Dropdown"
@@ -1051,7 +1053,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     selectionButton.BackgroundColor3 = Kurai_Lib.Theme.Tab
     selectionButton.Size = UDim2.new(1, 0, 0, 30)
     selectionButton.Position = UDim2.new(0, 0, 0, 20)
-    selectionButton.Text = props.Default or props.State or (props.Options and props.Options[1]) or "Select..."
     selectionButton.Parent = dropdown
     
     local selectionPadding = Instance.new("UIPadding")
@@ -1114,12 +1115,34 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     local isOpen = false
     local options = props.Options or {}
 
-    local selectedOption = props.Default or props.State or (options[1] or "")
+    if multiselect then
+        local selectedOption = {}
+
+        if typeof(props.State) == "table" then
+            for i, option in next, props.State do
+                local foundoption = table.find(options, option)
+                
+                if foundoption then
+                    table.insert(selectedOption, foundoption)
+                end
+            end
+        end
+    else
+        local selectedOption = props.Default or props.State or (options[1] or "")
+    end
     
     self.Flags = self.Flags or {}
-    self.Flags[flag or props.Text or "Dropdown"] = selectedOption
+    self.Flags[flag or props.Text or "Dropdown"] = props.Multiselect and selectedOption
     
-    selectionButton.Text = selectedOption
+    if multiselect then
+        if #selectedOption < 1 then
+            selectionButton.Text = "None"
+        else
+            selectionButton.Text = #selectedOption or selectedOption[1]
+        end
+    else
+        selectionButton.Text = selectedOption
+    end
     
     local function createOptions(optiontable : table)
 
@@ -1160,24 +1183,65 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
             local optionCorner = Instance.new("UICorner")
             optionCorner.CornerRadius = UDim.new(0, 3)
             optionCorner.Parent = optionButton
-            
-            if option == selectedOption then
+
+            if multiselect then
+                local foundoption = table.find(selectedOption, option)
+                if foundoption then
+                    optionButton.BackgroundColor3 = Kurai_Lib.Theme.Accent
+                    optionButton.BackgroundTransparency = 0
+                end
+            elseif option == selectedOption then
                 optionButton.BackgroundColor3 = Kurai_Lib.Theme.Accent
             end
             
             optionButton.MouseEnter:Connect(function()
-                if option ~= selectedOption then
+
+                if multiselect then
+                    local foundoption = table.find(selectedOption, option)
+                    if not foundoption then
+                        Kurai_Lib.Tween(optionButton, {BackgroundTransparency = 0.2})
+                    end
+                elseif option ~= selectedOption then
                     Kurai_Lib.Tween(optionButton, {BackgroundTransparency = 0.2})
                 end
             end)
             
             optionButton.MouseLeave:Connect(function()
-                if option ~= selectedOption then
-                    Kurai_Lib.Tween(optionButton, {BackgroundTransparency = 0.5})
+
+                if multiselect then
+                    local foundoption = table.find(selectedOption, option)
+                    if not foundoption then
+                        Kurai_Lib.Tween(optionButton, {BackgroundTransparency = 0.2})
+                    end
+                elseif option ~= selectedOption then
+                    Kurai_Lib.Tween(optionButton, {BackgroundTransparency = 0.2})
                 end
             end)
             
             optionButton.MouseButton1Click:Connect(function()
+
+                if multiselect then
+                    local foundoption = table.find(selectedOption, option)
+                    if foundoption then
+                        table.remove(selectedOption, foundoption)
+                        Kurai_Lib.Tween(optionButton, {BackgroundColor3 = Kurai_Lib.Theme.Tab, BackgroundTransparency = 0.5})
+                        else
+                        table.insert(selectedOption, option)
+                        Kurai_Lib.Tween(optionButton, {BackgroundColor3 = Kurai_Lib.Theme.Accent, BackgroundTransparency = 0.5})
+                    end
+
+                    if #selectedOption < 1 then
+                        selectionButton.Text = "None"
+                    else
+                        selectionButton.Text = #selectedOption or selectedOption[1]
+                    end
+
+                    self.Flags[flag or props.Text or "Dropdown"] = selectedOption
+
+                    if props.Callback then
+                        props.Callback(selectedOption, dropdown)
+                    end
+                else
                 selectedOption = option
                 self.Flags[flag or props.Text or "Dropdown"] = selectedOption
                 selectionButton.Text = selectedOption
@@ -1194,7 +1258,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 
                 if props.Callback then
                     props.Callback(selectedOption, dropdown)
-                end
+                     end
+                 end
             end)
         end
     end
@@ -1300,6 +1365,29 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
     local control = {
         Instance = dropdown,
         Set = function(option)
+
+            if multiselect then
+                if typeof(option) == "table" then
+                    for i, newoption in next, option do
+                        table.insert(newoption, selectedOption)
+                    end
+                end
+
+                if #selectedOption < 1 then
+                    selectionButton.Text = "None"
+                else
+                    selectionButton.Text = #selectedOption or selectedOption[1]
+                end
+
+                self.Flags[flag or props.Text or "Dropdown"] = selectedOption
+
+                if props.Callback then
+                    props.Callback(selectedOption, dropdown)
+                end
+
+                return control
+            else
+
             if type(option) == "string" and table.find(options, option) then
                 selectedOption = option
                 self.Flags[flag or props.Text or "Dropdown"] = selectedOption
@@ -1311,6 +1399,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 
                 return control
             end
+        end
             
             return control
         end,
@@ -1321,6 +1410,28 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         Refresh = function(newOptions : table, keepSelection : boolean)
 
             local optiontable = newOptions
+
+            if multiselect then
+                
+                if keepSelection then
+                   local newSelectedOption = {}
+
+                    for i, option in next, selectedOption do
+                        if table.find(options, option) then
+                            table.insert(newSelectedOption, option)
+                        end
+                    end
+                    selectedOption = newSelectedOption
+                end
+
+                if #selectedOption < 1 then
+                    selectionButton.Text = "None"
+                else
+                    selectionButton.Text = #selectedOption or selectedOption[1]
+                end
+
+                self.Flags[flag or props.Text or "Dropdown"] = selectedOption
+            else
 
             if keepSelection then
                 local sameoption = table.find(optiontable,selectedOption)
@@ -1333,6 +1444,8 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                 repeat task.wait() until not isOpen
                 createOptions(optiontable)
             end
+            
+        end
             
             return control
         end
