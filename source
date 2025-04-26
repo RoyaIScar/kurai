@@ -1166,10 +1166,6 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
         for i, option in next, optiontable do
 
-            if type(option) == "function" then
-                table.remove(optiontable,option)
-            end
-
             if type(option) ~= "string" then
                 if option:IsA("Instance") or option:IsA("Player") then
                     option = option.Name
