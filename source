@@ -1166,7 +1166,11 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
         for i, option in next, optiontable do
 
-            if typeof(option) ~= "string" then
+            if type(option) == "function" then 
+                table.remove(option,optiontable)
+            end
+
+            if type(option) ~= "string" then
                 if option:IsA("Instance") or option:IsA("Player") then
                     option = option.Name
                 end
@@ -1413,7 +1417,7 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
                     if isOpen then
                         repeat task.wait() until not isOpen
-                        createOptions()
+                        createOptions(options)
                     end
 
                     return control
@@ -1475,12 +1479,12 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
         end,
         Refresh = function(newOptions, keepSelection)
 
-            local optiontable = newOptions or {}
+            local optiontable = newOptions
 
             if isMulti then
                 if not keepSelection then
                     selectedOptions = {}
-                    self.Flags[flag or props.Text or "Dropdown"] = selectedOptions
+                    --self.Flags[flag or props.Text or "Dropdown"] = selectedOptions
                     selectionButton.Text = "None"
                 else
                     -- Keep only options that still exist
@@ -1501,12 +1505,12 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
                         selectionButton.Text = #selectedOptions .. " selected"
                     end
 
-                    self.Flags[flag or props.Text or "Dropdown"] = selectedOptions
+                    --self.Flags[flag or props.Text or "Dropdown"] = selectedOptions
                 end
             else
                 if not keepSelection or not table.find(optiontable, selectedOption) then
-                    selectedOption = options[1] or ""
-                    self.Flags[flag or props.Text or "Dropdown"] = selectedOption
+                    selectedOption = optiontable[1] or ""
+                    --self.Flags[flag or props.Text or "Dropdown"] = selectedOption
                     selectionButton.Text = selectedOption
                 end
             end
