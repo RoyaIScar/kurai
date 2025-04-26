@@ -1493,10 +1493,10 @@ function Kurai_Lib:_createDropdown(tabName, props, flag)
 
                    for i, option in next, selectedOptions do
                     if not table.find(optiontable, option) then
-                        table.remove(selectedOptions, option)
+                        table.remove(selectedOptions, i)
                        end
                     end
-                    
+
 
                     -- Update display text
                     if #selectedOptions == 0 then
